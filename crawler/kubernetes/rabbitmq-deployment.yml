@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbit
+  labels:
+    app: crawler
+    component: rabbit
+    rabbit-mq: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawler
+      component: rabbit
+  template:
+    metadata:
+      name: rabbit
+      labels:
+        app: crawler
+        component: rabbit
+        crawler-db: "true"
+    spec:
+      containers:
+        - image: rabbitmq:3.8.5-alpine
+          name: rabbit
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: queueuser
+            - name: RABBITMQ_DEFAULT_PASS
+              value: Passw0rd

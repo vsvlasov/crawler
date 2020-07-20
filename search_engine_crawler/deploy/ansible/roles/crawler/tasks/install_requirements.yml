@@ -1,0 +1,9 @@
+---
+- name: Install dependencies
+  apk:
+    name: build-base
+    update_cache: yes
+
+- name: Install Python requirements
+  pip:
+    requirements: /app/requirements.txt

@@ -1,0 +1,4 @@
+- name: Remove build-base
+  apk:
+    name: build-base
+    state: absent

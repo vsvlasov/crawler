@@ -1,0 +1,58 @@
+version: '3.3'
+services:
+  crawlerdb:
+    image: mongo:3.2
+    volumes:
+      - crawler_db:/data/db
+    networks:
+      backnet:
+        aliases:
+          - db
+      front_net:
+        aliases:
+          - db
+
+  rabbitmq:
+    image: rabbitmq:3.8.5-alpine
+    networks:
+      backnet:
+        aliases:
+          - rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=queueuser
+      - RABBITMQ_DEFAULT_PASS=Passw0rd
+
+  crawler:
+    build: ./search_engine_crawler
+    image: vvlineate/crawler:latest
+
+    environment:
+      - URL=https://vitkhab.github.io/search_engine_test_site/
+      - EXCLUDE_URLS='.*github.com'
+      - MONGO=db
+      - RMQ_HOST=rabbitmq
+      - RMQ_QUEUE=rmq:3
+      - RMQ_USERNAME=queueuser
+      - RMQ_PASSWORD=Passw0rd
+      - CHECK_INTERVAL=3600
+    networks:
+      - backnet
+
+  ui:
+    build: ./search_engine_ui
+    image: vvlineate/ui:latest
+    environment:
+      - MONGO=db
+
+    ports:
+      - ${HOST_PORT:-8000}:${APP_PORT:-8000}/tcp
+    networks:
+      - front_net
+
+
+volumes:
+  crawler_db:
+
+networks:
+  front_net:
+  backnet:

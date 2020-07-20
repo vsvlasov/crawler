@@ -1,0 +1,42 @@
+{
+  "builders": [
+    {
+      "type": "docker",
+      "image": "python:3.6.0-alpine",
+      "commit": "true",
+      "run_command": ["-d", "-i", "-t", "{{.Image}}", "/bin/sh"],
+      "changes": [
+        "WORKDIR /app",
+        "CMD python -u crawler/crawler.py $URL"
+      ]
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "vvlineate/crawler",
+        "tag": "latest"
+      },
+      {
+        "type": "docker-push",
+        "login": true,
+        "login_username": "{{user `username`}}",
+        "login_password": "{{user `password`}}"
+      }
+    ]
+  ],
+  "provisioners": [{
+      "source": "../src",
+      "destination": "/app",
+      "type": "file"
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "ansible/playbooks/packer_crawler.yml",
+      "ansible_env_vars": [
+        "ANSIBLE_ROLES_PATH={{ pwd }}/ansible/roles/"
+      ]
+    }
+  ]
+}

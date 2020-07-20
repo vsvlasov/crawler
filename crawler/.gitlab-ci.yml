@@ -1,0 +1,42 @@
+image: google/cloud-sdk:alpine
+
+stages:
+#  - temporary disabled
+#  - prepare_cluster
+  - deploy
+
+before_script:
+  - gcloud config set project $GOOGLE_PROJECT
+  - gcloud auth activate-service-account --key-file $KEY_FILE
+
+#init_cluster:
+#  stage: prepare_cluster
+#  only:
+#    refs:
+#      - master
+#  script:
+#    - apk --no-cache --update add curl unzip
+#    - curl https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip --output tf.zip
+#    - unzip tf.zip -d /usr/bin/
+#    - cd infra/terraform
+#    - terraform init
+#    - terraform apply -input=false -auto-approve -var "project=$GOOGLE_PROJECT" -var "machine_type=$GOOGLE_MACHINE_TYPE"
+#    - cd ../..
+
+deploy_job:
+  stage: deploy
+  only:
+    refs:
+      - master
+  script:
+    - apk --no-cache --update add curl
+    - curl https://get.helm.sh/helm-v3.2.4-linux-amd64.tar.gz | tar zx
+    - mv linux-amd64/helm /usr/bin/
+    - curl -o /usr/bin/kubectl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+    - chmod +x /usr/bin/kubectl
+    - gcloud container clusters get-credentials crawler --zone europe-west1-b
+    - cd kubernetes
+    - kubectl apply -f namespaces/.
+    - kubectl apply -f .
+    - kubectl apply -f efk/. -n monitoring
+    - helm install kibana stable/kibana --set "ingress.enabled=true" --set "ingress.hosts={crawler-kibana}" --set "env.ELASTICSEARCH_URL=http://elasticsearch-logging:9200"

@@ -1,0 +1,5 @@
+---
+# tasks file for crawler
+- include: install.yml
+- include: install_requirements.yml
+- include: clean_up.yml

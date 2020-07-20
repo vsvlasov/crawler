@@ -1,0 +1,33 @@
+stages:
+  - test
+  - deploy
+
+test_crawler_job:
+  image: python:3.6-alpine
+  stage: test
+  script:
+    - cd ./src
+    - pip install -r requirements.txt
+    - pip install -r requirements-test.txt
+    - python -m unittest discover -s tests/
+    - cd ..
+
+
+deploy_job:
+  image: docker:19.03.12
+  services:
+    - docker:dind
+
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+
+  stage: deploy
+#  only:
+#    refs:
+#      - master
+  script:
+    - cd deploy
+    - apk --no-cache --update add curl ansible unzip
+    - curl https://releases.hashicorp.com/packer/1.6.0/packer_1.6.0_linux_amd64.zip --output packer.zip
+    - unzip packer.zip -d /usr/bin/
+    - packer build -var "username=$username" -var "password=$password" packer/crawler.json
