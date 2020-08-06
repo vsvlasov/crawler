@@ -49,3 +49,19 @@
 
     make delete_configmaps
     helm uninstall grafana prom
+
+# Alertmanager
+В Prometheus настроены алерты с отправкой сообщений в Slack:
+```
+Workspace: devops-team-otus.slack.com
+Channel: #vladimir_vlasov
+```
+
+Добавлены следующие алерты:
+1. `AvgPageGenTimeIsHigh` - Среднее время генерации страниц UI сервисом > 1000 мс
+
+2. `NoParsedPages` - Нет спарсеных страниц за последние 15 минут
+
+3. `ParsedPagesRateLow` - Рейт спарсеных страниц за 15 минут < 0.2
+
+4. `InstanceDown` - Свидетельствует об упавших инстансах / недоступности endpoint для сбора метрик

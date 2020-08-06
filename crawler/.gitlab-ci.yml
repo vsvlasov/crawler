@@ -45,7 +45,6 @@ deploy_production_job:
   script:
     - gcloud container clusters get-credentials crawler --zone europe-west1-b
     - sh ops/prepare.sh
-    - kubectl create namespace staging
     - kubectl apply -f kubernetes/namespaces/production-ns.yml
     - kubectl config set-context --current --namespace production
     - make run
