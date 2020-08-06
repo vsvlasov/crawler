@@ -836,7 +836,7 @@ pushgateway:
 alertmanagerFiles:
   alertmanager.yml:
     global:
-      slack_api_url: ''
+      slack_api_url: 'https://hooks.slack.com/services/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'
 
     receivers:
       - name: 'slack-notifications'
@@ -887,16 +887,6 @@ serverFiles:
            annotations:
              description: 'No parsed pages for the last 15 minutes. Please check backend pods'
              summary: 'No parsed pages for the last 15 minutes'
-     - name: UI
-       rules:
-         - alert: AvgPageGenTimeIsHigh
-           expr: avg(web_page_gen_time_bucket) by (pod_name) > 1000
-           for: 1m
-           labels:
-             severity: page
-           annotations:
-             description: 'Average page generation time is high for pod {{ $labels.pod_name }}'
-             summary: 'Page generation time > 1000 ms for pod {{ $labels.pod_name }}'
 
   ## DEPRECATED DEFAULT VALUE, unless explicitly naming your files, please use alerting_rules.yml
   alerts: {}
