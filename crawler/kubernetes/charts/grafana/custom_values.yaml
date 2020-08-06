@@ -1,0 +1,26 @@
+clusterDomain: monitoring.dashboards
+
+admin:
+  password: admin
+
+service:
+  type: NodePort
+
+ingress:
+  enabled: true
+  hosts:
+    - name: monitoring.dashboards
+
+datasources:
+  secretName: datasource-secret
+
+dashboardsProvider:
+  enabled: true
+
+dashboardsConfigMaps:
+  - configMapName: grafana-deployment-metrics
+    fileName: deployment-metrics.json
+  - configMapName: grafana-kubernetes-cluster-monitoring
+    fileName: kubernetes-cluster-monitoring.json
+  - configMapName: grafana-crawler-metrics
+    fileName: crawler_dashboard.json

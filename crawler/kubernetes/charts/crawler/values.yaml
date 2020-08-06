@@ -1,0 +1,10 @@
+mongodb:
+  auth:
+    enabled: false
+
+rabbitmq:
+  auth:
+    username: rabbitmq
+    password: Passw0rd
+
+nodeSelector: {}

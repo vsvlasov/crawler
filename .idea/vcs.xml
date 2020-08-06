@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/crawler" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/crawler/infra/terraform/.terraform/modules/storage-bucket" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/crawler/infra/terraform/.terraform/modules/storage-bucket.label" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/search_engine_crawler" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/search_engine_ui" vcs="Git" />
+  </component>
+</project>

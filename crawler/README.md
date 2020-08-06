@@ -1,66 +1,35 @@
-# Сборка образов
-Код для [UI](https://gitlab.com/vvlineate/search_engine_ui)
- и [Crawler](https://gitlab.com/vvlineate/search_engine_crawler)
- сервисов вынесен в отдельные проекты.
+# Crawler
+Инфраструктурный репозиторий для поискового бота.
 
-Для каждого проекта настроен CI/CD.
+# Запуск приложения локально
+1. Выполнить шаги из [Подготовка локального окружения](docs/prerequisites_local.md)
+2. Собрать [Docker образы](./docs/docker.md)
+3. Запустить в корне проекта `make init_minikube`
+4. Запустить в корне проекта `make run_local`
+5. Обновить [hosts](./docs/hosts.md)
 
-### CI/CD
-Для проекта настроен CI/CD, пайплайн содержит 2 стейджа:
-1. tests - запуск python тестов для кода проекта.
-Выполняется всегда.
-2. deploy - сборка образа, пуш в Docker hub.
-Выполняется только на изменения в master branch.
-
-### Packer
-Для сборки и пуша образов используется Packer с Ansible provisioner.
+# Запуск приложения в GCP
+1. [Настроить GCP](docs/prerequisites_gcp.md)
+2. [Подготовить gitlab](./docs/gitlab.md)
+3. [Запустить пайплайн для деплоя](./docs/gitlab.md)
 
 
-# Локальное окружение
-Для разработки, в зависимости от разрабатываемой части потребуются установить следующие пакеты:
-1. Установить [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
+# Проверка работоспособности
+При первом запуске необходимо немного подождать, пока поды в кластере задеплоятся.
+Проверить статус подов можно с помощью команды
 
-    1.1 Создать VM для minikube
-    ```shell script
-    minikube start --driver=virtualbox --cpus 4 --memory 8192
-    ```
-    1.2 Включить аддоны
-    ```shell script
-    minikube addons enable ingress
-    ```
+    kubectl get pods
 
-# get credentials
-gcloud container clusters get-credentials crawler --zone europe-west-1b
+Для проверки, необходимо перейти по ссылке http://crawler.com
 
-
-# get credentials
-gcloud container clusters get-credentials crawler --zone europe-west-1b
-
-
-# Local run with docker-compose
-```shell script
-cd kubernetes
-kubectl apply -f .
-```
-
-Деплой EFK стека
-```shell script
-cd kubernetes
-kubectl apply -f efk/.
-```
-
-Установка Kibana
-```shell script
-helm install kibana stable/kibana \
---set "ingress.enabled=true" \
---set "ingress.hosts={crawler-kibana}" \
---set "env.ELASTICSEARCH_URL=http://elasticsearch-logging:9200"
-```
-
-# TODO
-1. Пофиксить деплой, terraform зависает в gitlab
-2. Пофиксить ingress для kibana
-3. Обновить EFK, пофиксить пермишены
-4. Сделать helm charts на замену кучи файлов k8s
-5. Добавить мониторинг, prometheus
-6. Обновить доки для 3-х репозиториев
+# Документация
+- [Подготовка локального окружения](docs/prerequisites_local.md)
+- [Подготовка GCP окружения](docs/prerequisites_gcp.md)
+- Kubernetes
+  - [Nginx Ingress](./docs/ingress.md)
+  - [Логгирование EFK](./docs/efk.md)
+  - [Мониторинг Prometheus+Grafana](./docs/monitoring.md)
+  - [App crawler](./docs/crawler.md)
+- [Terraform](./docs/tf.md)
+- [CI/CD](./docs/gitlab.md)
+- [Docker](./docs/docker.md)

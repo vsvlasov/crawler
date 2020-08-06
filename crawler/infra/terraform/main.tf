@@ -1,8 +1,8 @@
 terraform {
   required_version = "~>0.12.8"
   backend "gcs" {
-    bucket  = "crawler-app-storage"
-    prefix  = "terraform/state"
+    bucket = "crawler-app-storage"
+    prefix = "terraform/state"
   }
 }
 
@@ -13,10 +13,10 @@ provider "google" {
 }
 
 resource "google_container_cluster" "kubernetes-cluster" {
-  name                    = "crawler"
-  location                = var.zone
-  network                 = "default"
-  initial_node_count      = 4
+  name               = "crawler"
+  location           = var.zone
+  network            = "default"
+  initial_node_count = 3
 
   master_auth {
     client_certificate_config {
@@ -58,6 +58,28 @@ resource "google_container_cluster" "kubernetes-cluster" {
     create = "20m"
     update = "10m"
   }
+}
+
+resource "google_container_node_pool" "monitoring" {
+  name       = "monitoring"
+  location   = var.zone
+  cluster    = google_container_cluster.kubernetes-cluster.name
+  node_count = 1
+
+  node_config {
+    preemptible  = true
+    machine_type = "n1-standard-2"
+
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+    ]
+
+    labels = {
+      monitoring = true
+    }
+  }
+
 }
 
 resource "google_compute_firewall" "kubernetes-nodeports" {

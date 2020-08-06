@@ -1,0 +1,21 @@
+---
+service:
+  internalPort: 8000
+  externalPort: 8000
+
+image:
+  repository: vvlineate/crawler
+  tag: latest
+
+db:
+  databaseHost:
+
+app:
+  URL: https://vitkhab.github.io/search_engine_test_site/
+  excludeUrls: .*github.com
+
+rabbit:
+  host:
+  queue: rmq
+  username: rabbitmq
+  password: Passw0rd

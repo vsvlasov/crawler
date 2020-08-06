@@ -22,7 +22,8 @@ spec:
         kubernetes.io/cluster-service: "true"
     spec:
       nodeSelector:
-        elastichost: "true"
+        monitoring: "true"
+
       containers:
       - image: k8s.gcr.io/elasticsearch:v5.6.4
         name: elasticsearch-logging

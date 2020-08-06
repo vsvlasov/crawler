@@ -1,0 +1,17 @@
+---
+dependencies:
+  - name: ui
+    version: "1.0.0"
+    repository: "file://../ui"
+
+  - name: backend
+    version: "1.0.0"
+    repository: "file://../backend"
+
+  - name: mongodb
+    version: 8.2.1
+    repository: https://charts.bitnami.com/bitnami
+
+  - name: rabbitmq
+    version: 7.5.7
+    repository: https://charts.bitnami.com/bitnami

@@ -1,0 +1,14 @@
+---
+service:
+  internalPort: 8000
+  externalPort: 8000
+
+image:
+  repository: vvlineate/ui
+  tag: latest
+
+databaseHost:
+
+ingress:
+  hosts:
+    - crawler.com

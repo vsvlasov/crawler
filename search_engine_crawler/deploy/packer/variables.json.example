@@ -1,5 +1,0 @@
-{
-  "project_id": "infra-######",
-  "source_image_family": "ubuntu-####-lts",
-  "image_description": "Puma custom description"
-}

@@ -22,9 +22,9 @@ deploy_job:
     DOCKER_HOST: tcp://docker:2375
 
   stage: deploy
-#  only:
-#    refs:
-#      - master
+  only:
+    refs:
+      - master
   script:
     - cd deploy
     - apk --no-cache --update add curl ansible unzip

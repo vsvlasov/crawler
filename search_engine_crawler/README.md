@@ -67,3 +67,7 @@ coverage report --include crawler/crawler.py
 
 ## Логиование
 Бот отправляет логи в `json`-формате в `stdout`
+
+## CI/CD
+Настроен CI/CD для паблишинга образов в Docker Hub.
+Для запуска пайплайна необходимо смерджить изменения в master ветку.

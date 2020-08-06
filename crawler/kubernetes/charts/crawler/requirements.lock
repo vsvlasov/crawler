@@ -1,0 +1,15 @@
+dependencies:
+- name: ui
+  repository: file://../ui
+  version: 1.0.0
+- name: backend
+  repository: file://../backend
+  version: 1.0.0
+- name: mongodb
+  repository: https://charts.bitnami.com/bitnami
+  version: 8.2.1
+- name: rabbitmq
+  repository: https://charts.bitnami.com/bitnami
+  version: 7.5.7
+digest: sha256:9691e6f31ceee23da0049eadaeda9a2c4509e0f84b79de474b910da0ce6212a8
+generated: "2020-08-03T00:31:48.07120228+06:00"
